@@ -51,8 +51,12 @@ const players = {
     playersListed: [],
 
     init: function () {    
-        pubsub.subscribe('playerAdded', players.playerAdded);
         console.log(`Players log: Subscribing to playerAdded`);
+        pubsub.subscribe('playerAdded', players.playerAdded);
+        console.log(`Players log: Subscribing to playerDeleted`);
+        pubsub.subscribe('playerDeleted', players.playerDeleted);
+        console.log(`Players log: Subscribing to playerUpdated`);    
+        pubsub.subscribe('playersUpdated', players.playersUpdated);
     },
 
     playerAdded: function (playerInput) {
@@ -64,17 +68,39 @@ const players = {
         let playersList = document.getElementById('playersL');        
         playersList.innerHTML = '';
 
+        let listItem;
         players.playersListed.forEach(name => {
-            let listItem = document.createElement('li');
+            listItem = document.createElement('li');
             listItem.innerText = name;
             playersList.appendChild(listItem);
         });
         
         playerInput.value = '';
+
+        listItem.addEventListener('click',() => {
+            pubsub.publish('playerDeleted', listItem);
+        })
+        
+        let amountPlayers = players.playersListed.length;
+        pubsub.publish('playersUpdated', amountPlayers);
     },
 
     playerDeleted: function(playerToDelete) {
-        players.playersListed = players.playersListed.filter(playerToDelete.value);
+        players.playersListed = players.playersListed.filter(name => name !== playerToDelete.value);
+
+        console.log(players.playersListed );
+
+        let listItem = playerToDelete.closest('li');
+
+        listItem.parentElement.removeChild(listItem);
+
+        pubsub.publish('playersUpdated',players.playersListed.length );
+        
+    },
+    
+    playersUpdated: function(amountPlayers){
+        let nPlayers = document.getElementById('numberPlayers');
+        nPlayers.innerText = amountPlayers;
     }
     
 }
@@ -103,6 +129,9 @@ playerBtn.addEventListener('click',(e)=>{
     e.preventDefault();
     pubsub.publish('playerAdded', playerInput);
 });
+
+
+
 
 
 
