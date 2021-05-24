@@ -1,8 +1,40 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Pub Sub Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+    <script  src="./script.js" defer></script>
+    <title>PubSub Practice</title>
 </head>
 <body>
     
+    <div id="mainContainer">
+        <div id="playersList" class="container">
+            <h1>Players</h1>
+            <ul id="playersL"></ul>    
+        </div>
+        
+        <div id="inputSection" class="container">
+            <div class="inputElements playerInput">
+                <p>Amount of players listed: <span id="numberPlayers">n</span></p>
+                <input type="text"  id="playerInput" placeholder="Player Name">
+                <button class="btn" id="playerBtn">Add</button>
+            </div>
+            
+            <div id="teamsInput" class="inputElements teamsInput">
+                <p>Amount of teams listed: <span id="numberTeams">n</span></p>
+                <input type="text" id="teamInput" placeholder="Team Name" />
+                <button class="btn" id="teamBtn">Add</button>
+            </div>
+
+        </div>
+        
+        <div id="teamsList" class="container">
+            <h1>Teams</h1>
+            <ul id="teamsUl"></ul>
+        </div>
+        
+    </div>
+
 </body>
 </html>

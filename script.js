@@ -31,7 +31,7 @@ const pubsub = {
     },
 
     publish: function(eventName, data){
-        console.log(`PubSub log: Running ${eventName} with ${data} as the data given`);
+        console.log(`PubSub log: Running ${eventName} with ${data.value} as the data given`);
 
         if (this.eventsTracker[eventName]){
             this.eventsTracker[eventName].forEach(
@@ -45,8 +45,80 @@ const pubsub = {
 }
 
 
-
 /////EventONE/////
+const players = {
+
+    playersListed: [],
+
+    init: function () {    
+        pubsub.subscribe('playerAdded', players.playerAdded);
+        console.log(`Players log: Subscribing to playerAdded`);
+    },
+
+    playerAdded: function (playerInput) {
+
+        if(playerInput.value != ""){ 
+            players.playersListed.push(playerInput.value);
+        }
+
+        let playersList = document.getElementById('playersL');        
+        playersList.innerHTML = '';
+
+        players.playersListed.forEach(name => {
+            let listItem = document.createElement('li');
+            listItem.innerText = name;
+            playersList.appendChild(listItem);
+        });
+        
+        playerInput.value = '';
+    },
+
+    playerDeleted: function(playerToDelete) {
+        players.playersListed = players.playersListed.filter(playerToDelete.value);
+    }
+    
+}
+
+
 
 
 /////EventTWO/////
+
+
+
+
+
+
+/////Main/////
+
+const playerBtn = document.getElementById('playerBtn');
+const playerInput = document.getElementById('playerInput');
+
+const teamBtn = document.getElementById('teamBtn');
+const teamInput = document.getElementById('teamInput');
+
+players.init();
+
+playerBtn.addEventListener('click',(e)=>{
+    e.preventDefault();
+    pubsub.publish('playerAdded', playerInput);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
