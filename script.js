@@ -29,7 +29,7 @@ const pubsub = {
     },
 
     publish: function(eventName, data){
-        console.log(`PubSub log: Running ${eventName} with ${data.value} as the data given`);
+        //console.log(`PubSub log: Running ${eventName} with ${data.value} as the data given`);
 
         if (this.eventsTracker[eventName]){
             this.eventsTracker[eventName].forEach(
@@ -157,7 +157,7 @@ const teams = {
   
         listItem.parentElement.removeChild(listItem);
   
-        pubsub.publish('teamUpdated', teams.teamsListed.length);
+        pubsub.publish('teamsUpdated', teams.teamsListed.length);
         
     },
     
