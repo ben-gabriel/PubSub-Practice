@@ -60,6 +60,7 @@ const players = {
     },
 
     playerAdded: function (playerInput) {
+        console.log(`Players log: Someone called playerAdded`);
 
         if(playerInput.value != ""){ 
             players.playersListed.push(playerInput.value);
@@ -83,27 +84,25 @@ const players = {
             });
         }
         
-        
-        
         playerInput.value = '';
         let amountPlayers = players.playersListed.length;
         pubsub.publish('playersUpdated', amountPlayers);
     },
 
     playerDeleted: function(playerToDelete) {
+        console.log(`Players log: Someone called playerDeleted`);
         players.playersListed = players.playersListed.filter(name => name !== playerToDelete.innerText);
-
-        console.log(players.playersListed );
 
         let listItem = playerToDelete.closest('li');
 
         listItem.parentElement.removeChild(listItem);
 
-        pubsub.publish('playersUpdated',players.playersListed.length);
+        pubsub.publish('playersUpdated', players.playersListed.length);
         
     },
     
     playersUpdated: function(amountPlayers){
+        console.log(`Players log: Someone called playersUpdated`);
         let nPlayers = document.getElementById('numberPlayers');
         nPlayers.innerText = amountPlayers;
         console.log(document.getElementById('playersL').children);
@@ -116,6 +115,69 @@ const players = {
 
 /////EventTWO/////
 
+const teams = {
+
+    teamsListed: [],
+  
+    init: function () {    
+        console.log(`Teams log: Subscribing to teamAdded`);
+        pubsub.subscribe('teamAdded', teams.teamAdded);
+        console.log(`Teams log: Subscribing to teamDeleted`);
+        pubsub.subscribe('teamDeleted', teams.teamDeleted);
+        console.log(`Teams log: Subscribing to teamUpdated`);    
+        pubsub.subscribe('teamsUpdated', teams.teamsUpdated);
+    },
+  
+    teamAdded: function (teamInput) {
+        console.log(`Teams log: Someone called teamAdded`);
+  
+        if(teamInput.value != ""){ 
+            teams.teamsListed.push(teamInput.value);
+        }
+  
+        let teamList = document.getElementById('teamsL');        
+        teamList.innerHTML = '';
+  
+        let listItem;
+        teams.teamsListed.forEach(name => {
+            listItem = document.createElement('li');
+            listItem.innerText = name;
+            teamList.appendChild(listItem);            
+        });
+        
+        let htmlCollection = teamList.children;
+        for (let index = 0; index < htmlCollection.length; index++) {
+            htmlCollection.item(index).addEventListener('click', 
+            () =>{
+                pubsub.publish('teamDeleted', htmlCollection.item(index));
+            });
+        }
+        
+        teamInput.value = '';
+        let amountTeams = teams.teamsListed.length;
+        pubsub.publish('teamsUpdated', amountTeams);
+    },
+  
+    teamDeleted: function(teamToDelete) {
+        console.log(`Teams log: Someone called teamDeleted`);
+        teams.teamsListed = teams.teamsListed.filter(name => name !== teamToDelete.innerText);
+  
+        let listItem = teamToDelete.closest('li');
+  
+        listItem.parentElement.removeChild(listItem);
+  
+        pubsub.publish('teamUpdated', teams.teamsListed.length);
+        
+    },
+    
+    teamsUpdated: function(amountTeams){
+        console.log(`Teams log: Someone called teamsUpdated`);
+        let nTeams = document.getElementById('numberTeams');
+        nTeams.innerText = amountTeams;
+        console.log(document.getElementById('teamsL').children);
+    }
+    
+  }
 
 
 
@@ -130,12 +192,17 @@ const teamBtn = document.getElementById('teamBtn');
 const teamInput = document.getElementById('teamInput');
 
 players.init();
+teams.init();
 
 playerBtn.addEventListener('click',(e)=>{
     e.preventDefault();
     pubsub.publish('playerAdded', playerInput);
 });
 
+teamBtn.addEventListener('click',(e)=>{
+    e.preventDefault();
+    pubsub.publish('teamAdded', teamInput);
+});
 
 
 
