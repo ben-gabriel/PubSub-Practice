@@ -205,11 +205,22 @@ teamBtn.addEventListener('click',(e)=>{
 });
 
 
+/////example content, to start with data/////
+playerInput.value='Jhony Cruz';
+players.playerAdded(playerInput);
+
+playerInput.value='Serena Williams';
+players.playerAdded(playerInput);
+
+playerInput.value='Michael Jordan';
+players.playerAdded(playerInput);
 
 
+teamInput.value='Chicago Bulls';
+teams.teamAdded(teamInput);
 
-
-
+teamInput.value='FC Barcelona';
+teams.teamAdded(teamInput);
 
 
 
