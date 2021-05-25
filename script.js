@@ -72,21 +72,26 @@ const players = {
         players.playersListed.forEach(name => {
             listItem = document.createElement('li');
             listItem.innerText = name;
-            playersList.appendChild(listItem);
+            playersList.appendChild(listItem);            
         });
         
-        playerInput.value = '';
-
-        listItem.addEventListener('click',() => {
-            pubsub.publish('playerDeleted', listItem);
-        })
+        let htmlCollection = playersList.children;
+        for (let index = 0; index < htmlCollection.length; index++) {
+            htmlCollection.item(index).addEventListener('click', 
+            () =>{
+                pubsub.publish('playerDeleted', htmlCollection.item(index));
+            });
+        }
         
+        
+        
+        playerInput.value = '';
         let amountPlayers = players.playersListed.length;
         pubsub.publish('playersUpdated', amountPlayers);
     },
 
     playerDeleted: function(playerToDelete) {
-        players.playersListed = players.playersListed.filter(name => name !== playerToDelete.value);
+        players.playersListed = players.playersListed.filter(name => name !== playerToDelete.innerText);
 
         console.log(players.playersListed );
 
@@ -94,13 +99,14 @@ const players = {
 
         listItem.parentElement.removeChild(listItem);
 
-        pubsub.publish('playersUpdated',players.playersListed.length );
+        pubsub.publish('playersUpdated',players.playersListed.length);
         
     },
     
     playersUpdated: function(amountPlayers){
         let nPlayers = document.getElementById('numberPlayers');
         nPlayers.innerText = amountPlayers;
+        console.log(document.getElementById('playersL').children);
     }
     
 }
