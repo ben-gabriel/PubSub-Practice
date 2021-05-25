@@ -1,7 +1,5 @@
-
 /////PUBSUB/////
 const pubsub = {
-
     eventsTracker: {
         // Object to track all the `events: functions()` that call subscribe()
     },
@@ -44,10 +42,8 @@ const pubsub = {
 
 }
 
-
 /////EventONE/////
 const players = {
-
     playersListed: [],
 
     init: function () {    
@@ -110,13 +106,8 @@ const players = {
     
 }
 
-
-
-
 /////EventTWO/////
-
 const teams = {
-
     teamsListed: [],
   
     init: function () {    
@@ -179,12 +170,7 @@ const teams = {
     
   }
 
-
-
-
-
 /////Main/////
-
 const playerBtn = document.getElementById('playerBtn');
 const playerInput = document.getElementById('playerInput');
 
@@ -221,17 +207,3 @@ teams.teamAdded(teamInput);
 
 teamInput.value='FC Barcelona';
 teams.teamAdded(teamInput);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
